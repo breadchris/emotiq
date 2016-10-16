@@ -9,7 +9,7 @@ var gulp       = require('gulp'),
 
 var paths = {
 	styles:  ['static/styles/*.css', '!static/styles/build/**'],
-	scripts: ['node_modules/masonry-layout/dist/masonry.pkgd.js', 'node_modules/boomsvgloader/dist/js/boomsvgloader.js', 'static/scripts/*.js', '!static/scripts/build/**'],
+	scripts: ['node_modules/boomsvgloader/dist/js/boomsvgloader.js', 'static/scripts/*.js', '!static/scripts/build/**'],
 	sprites: ['static/images/icons/*.svg', '!static/images/icons/icon-sprite.svg']
 };
 

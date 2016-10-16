@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-<title>Emotiq</title>
+<title>{% block title %}{% endblock %}</title>
 
 <meta name="Description" content="See how news articles correlate with stock prices.">
 <meta charset="UTF-8">
@@ -33,7 +33,7 @@
 
 <div class="page-header">
 	<h1>Apple</h1>
-	<div class="stock-symbol">{{company}}</div>
+	<div class="stock-symbol">$AAPL</div>
 </div>
 
 <div class="mainflow">
@@ -56,37 +56,6 @@
 		</div>
 		
 		<div class="chart">
-<<<<<<< HEAD
-=======
-			
-		</div>
-		
-		<div class="articles">
-		
-			<div class="article">
-				<a href="#">
-					<img class="article-image" src="https://hd.unsplash.com/reserve/Hxev8VTsTuOJ27thHQdK_DSC_0068.JPG">
-				</a>
-				<div class="article-text">
-					<a href="#">
-						<h3 class="article-title">Title here</h3>
-					</a>
-					<p class="article-excerpt">Inception of the real world, contrast is determined by the difference in the color and brightness of the object and other objects within the same field of view.</p>
-				</div>
-			</div>
-			
-			<div class="article">
-				<a href="#">
-					<img class="article-image" src="https://images.unsplash.com/photo-1475754857078-5c15de17844c?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&s=9818e5c604e47c1facdf1e28c7d15f02">
-				</a>
-				<div class="article-text">
-					<a href="#">
-						<h3 class="article-title">Title here</h3>
-					</a>
-					<p class="article-excerpt">Inception of the real world, contrast is determined by the difference in the color and brightness of the object and other objects within the same field of view.</p>
-				</div>
-			</div>
->>>>>>> 4c790cae10258ecf1c832ea13f8d94ed18920121
 			
 		</div>
 		
@@ -95,12 +64,12 @@
 			{% for article in imaged_articles %}
 		
 			<div class="article">
-				<a href="{{ article[1] }}">
-					<img class="article-image" src="{{ article[2] }}">
+				<a href="{% article[1] %}">
+					<img class="article-image" src="{% article[2] %}">
 				</a>
 				<div class="article-text">
-					<a href="{{ article[1] }}">
-						<h3 class="article-title">{{ article[0] }}</h3>
+					<a href="{% article[1] %}">
+						<h3 class="article-title">{% article[0] %}</h3>
 					</a>
 					<p class="article-excerpt"></p>
 				</div>
