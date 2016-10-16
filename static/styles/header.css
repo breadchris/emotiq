@@ -38,14 +38,18 @@
 }
 
 .search-toggle {
+	transition: transform 0.3s ease-out, opacity 0.3s ease-out;
 	background: none;
 	cursor: pointer;
 	border-radius: 0;
 	border: none;
 	outline: none;
-		
+	
+	&.flipped {
+		transform: rotateX(180deg);
+	}
+			
 	svg {
-		transition: transform 0.3s ease-out, opacity 0.3s ease-out;
 		width: 1.5rem;
 		height: 1.5rem;
 		fill: var(--off-white);
@@ -53,10 +57,6 @@
 		&:hover {
 			opacity: 0.8;
 		}
-	}
-	
-	&.flipped svg {
-		transform: rotateX(180deg);
 	}
 }
 
@@ -137,14 +137,6 @@
 		box-shadow: none;
 		max-width: 20rem;
 		max-height: none;
-		
-		input[type="search"] {
-
-		}
-		
-		button {
-
-		}
 		
 		&.open {
 			box-shadow: none;
