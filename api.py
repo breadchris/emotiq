@@ -18,7 +18,6 @@ def get_search_results(query):
     })
 
     r = requests.get('https://api.cognitive.microsoft.com/bing/v5.0/news/search?%s' % params, headers=headers)
-    print r.text
     news_articles = json.loads(r.text)
 
     article_urls = []
@@ -31,7 +30,6 @@ def get_search_results(query):
     for article in news_articles["value"]:
         if 'image' in article.keys() and len(article_thumbnails) < 8:
             article_thumbnails.append([article["name"], article["url"], article["image"]["thumbnail"]["contentUrl"], article["description"]])
-    print article_thumbnails
     # TODO return urls instead... return article_descriptions
     return article_descriptions, article_thumbnails
 
