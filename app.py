@@ -84,7 +84,8 @@ def index():
 
         return render_template("index.html", company=company, sentiment=sentiment, imaged_articles=articles_with_images)
 
-    return render_template("index.html")
+    descriptions,articles_with_images = get_search_results("AAPL")
+    return render_template("index.html", imaged_articles=articles_with_images)
 
 
 if __name__ == "__main__":

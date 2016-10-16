@@ -29,7 +29,7 @@ def get_search_results(query):
 
     article_thumbnails = []
     for article in news_articles["value"]:
-        if 'image' in article.keys():
+        if 'image' in article.keys() and len(article_thumbnails) < 8:
             article_thumbnails.append([article["name"], article["url"], article["image"]["thumbnail"]["contentUrl"], article["description"]])
     print article_thumbnails
     # TODO return urls instead... return article_descriptions
