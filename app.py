@@ -1,5 +1,7 @@
 from flask import Flask, request
 from flask import render_template
+from collections import Counter
+
 import json
 import time
 import datetime
@@ -12,7 +14,7 @@ from sqlalchemy.sql import func
 
 import ystockquote
 
-from api import get_search_results, get_sentiment_scores, get_textblob_sentiment
+from api import get_search_results, get_sentiment_scores, get_textblob_sentiment, get_text_topics
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db/sentiment.db'
@@ -121,16 +123,22 @@ def get_sentiment_graph(company):
 @app.route('/phrases/<company>', methods=['GET'])
 def get_key_phrases(company):
     articles, articles_with_images = get_search_results(company)
-    key_phrases = get_text_topics([a["description"] for a in articles])
-    return None
+    keyphrases = get_text_topics([x["description"] for x in articles])
+
+    phrase_freq = Counter(keyphrases)
+    return json.dumps([{"name":x, "y":y} for x, y in phrase_freq.most_common(10)])
 
 @app.route('/demo', methods=['GET', 'POST'])
 def demo():
     if request.method == 'POST':
         company = request.form.get("company")
-        descriptions,articles_with_images = get_search_results(company)
+        descriptions, articles_with_images = get_search_results(company)
         sentiments = get_sentiment_scores([x["description"] for x in descriptions])
         sentiment = sum(sentiments) / len(sentiments)
+        keyphrases = get_text_topics([x["description"] for x in descriptions])
+
+        phrase_freq = Counter(keyphrases)
+        print phrase_freq.most_common(10)
 
         # text_blob_sentiment = get_textblob_sentiment(descriptions)
         # print sum([x for x in text_blob_sentiment if x != 0]) / len(text_blob_sentiment)
@@ -145,6 +153,9 @@ def demo():
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
+    start_date = "2016-10-02"
+    end_date = "2016-10-16"
+    company = "AAPL"
     if request.method == 'POST':
         if len(request.form.get("company")) <= 4:
             topic_name = get_symbol(request.form.get("company").upper())
@@ -162,10 +173,10 @@ def index():
         # text_blob_sentiment = get_textblob_sentiment(descriptions)
         # print sum([x for x in text_blob_sentiment if x != 0]) / len(text_blob_sentiment)
 
-        return render_template("index.html", company=company, topic_name=topic_name, symbol=company_stock_symbol, price=company_stock_price, sentiment=sentiment, imaged_articles=articles_with_images)
-    company_stock_price = ystockquote.get_all("AAPL")["price"]
-    descriptions,articles_with_images = get_search_results("AAPL")
-    return render_template("index.html", imaged_articles=articles_with_images, price=company_stock_price)
+        return render_template("index.html", company=company, topic_name=topic_name, symbol=company_stock_symbol, price=company_stock_price, sentiment=sentiment, imaged_articles=articles_with_images, startdate=start_date, enddate=end_date)
+    company_stock_price = ystockquote.get_all(company)["price"]
+    descriptions,articles_with_images = get_search_results(company)
+    return render_template("index.html", imaged_articles=articles_with_images, price=company_stock_price, company=company, startdate=start_date, enddate=end_date)
 
 
 if __name__ == "__main__":

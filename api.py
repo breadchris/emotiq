@@ -83,17 +83,17 @@ def get_text_topics(text_list):
     for n, text in enumerate(text_list):
 
         text_info = {
-            "documents": [
-                {
-                    "language": "en",
-                    "id": str(n),
-                    "text": text
-                }
-            ]
-        }
+                "language": "en",
+                "id": str(n),
+                "text": text
+            }
         params['documents'].append(text_info)
 
     params = json.dumps(params)
     r = requests.post('https://westus.api.cognitive.microsoft.com/text/analytics/v2.0/keyPhrases', data=params, headers=headers)
     sentiments = json.loads(r.text)["documents"]
-    return [x["keyPhrased"] for x in sentiments]
+
+    out = []
+    for phrases in sentiments:
+        out.extend(phrases["keyPhrases"])
+    return out
