@@ -11,3 +11,4 @@ flask-sqlalchemy
 requests
 textblob
 ystockquote
+clarifai==2.0.6

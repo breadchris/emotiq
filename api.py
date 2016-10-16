@@ -4,7 +4,7 @@ from textblob import TextBlob
 def get_search_results(query):
     headers = {
         # Request headers
-        'Ocp-Apim-Subscription-Key': '9a624ee241da40d09cb6a3c687e261ea',
+        'Ocp-Apim-Subscription-Key': '45ed6c588fd547a7b63acb074b4e3ea5',
     }
 
     params = urllib.urlencode({
@@ -47,7 +47,7 @@ def get_sentiment_scores(text_list):
     headers = {
         # Request headers
         'Content-Type': 'application/json',
-        'Ocp-Apim-Subscription-Key': '03283dc946e843f3881069b78bd6b20a',
+        'Ocp-Apim-Subscription-Key': '8ba89871877043cb9372879e03198203',
     }
 
     params = {
@@ -73,7 +73,7 @@ def get_text_topics(text_list):
     headers = {
         # Request headers
         'Content-Type': 'application/json',
-        'Ocp-Apim-Subscription-Key': '03283dc946e843f3881069b78bd6b20a',
+        'Ocp-Apim-Subscription-Key': '8ba89871877043cb9372879e03198203',
     }
 
     params = {
