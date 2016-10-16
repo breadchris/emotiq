@@ -18,7 +18,7 @@ var processors = [
 	require('postcss-nested'),
 	require('postcss-custom-properties'),
 	require('css-mqpacker')({sort: true}),
-	require('autoprefixer')('last 2 versions', '> 5%', 'Firefox ESR'),
+	require('autoprefixer')('last 2 versions', '> 5% in US', 'Firefox ESR'),
 	require('cssnano')({autoprefixer: false, reduceIdents: false}) // Autoprefixer has just been run, don't do it again; reduceIdents is pretty unsafe.
 ];
 
