@@ -1,6 +1,5 @@
 import datetime
 from sqlalchemy.dialects.mysql import *
-from flask.ext.sqlalchemy import SQLAlchemy
 from app import app
 
 db = SQLAlchemy(app)

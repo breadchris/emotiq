@@ -1,16 +1,13 @@
 from flask import Flask
 from flask import render_template
-from pymongo import MongoClient
+from flask.ext.sqlalchemy import SQLAlchemy
 import json
 from bson import json_util
 from bson.json_util import dumps
 
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///tmp/lol'
 
-MONGODB_HOST = 'localhost'
-MONGODB_PORT = 27017
-DBS_NAME = 'donorschoose'
-COLLECTION_NAME = 'projects'
 FIELDS = {'school_state': True, 'resource_type': True, 'poverty_level': True, 'date_posted': True, 'total_donations': True, '_id': False}
 
 
