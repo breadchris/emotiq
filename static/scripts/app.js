@@ -1,0 +1,1 @@
+boomsvgloader.load('/static/images/icons/icon-sprite.svg');
