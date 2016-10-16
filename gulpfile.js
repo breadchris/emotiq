@@ -23,7 +23,7 @@ var processors = [
 ];
 
 gulp.task(function styles() {
-	return gulp.src('static/styles/style.css')
+	return gulp.src('static/styles/app.css')
 		.pipe(sourcemaps.init())
 			.pipe(postcss(processors))
 		.pipe(sourcemaps.write('./'))
