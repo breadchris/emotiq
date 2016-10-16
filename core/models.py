@@ -14,12 +14,14 @@ class Article(db.Model):
 	ArticleScore = db.Column(db.Float)
 	ArticleTitle = db.Column(db.Text)
 	ArticlePublishDate = db.Column(db.DateTime)
+	ArticleImage = db.Column(db.Text)
 
-	def __init__(self, ArticleURL, ArticleTitle, ArticleScore, ArticlePublishDate):
+	def __init__(self, ArticleURL, ArticleTitle, ArticleScore, ArticlePublishDate, ArticleImage):
 		self.ArticleURL = ArticleURL
 		self.ArticleTitle = ArticleTitle
 		self.ArticleScore = ArticleScore
 		self.ArticlePublishDate = ArticlePublishDate
+		self.ArticleImage = ArticleImage
 
 	def __repr__(self):
 		return "<" + self.ArticleURL + " @ " + str(self.ArticleScore) + ">"
