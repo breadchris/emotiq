@@ -23,6 +23,8 @@ var placeholders = [
 	"coal",
 	"tsla",
 	"solar",
+	"yhoo",
+	"ea",
 	"sbux"
 ];
 
