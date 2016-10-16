@@ -9,8 +9,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <!-- Icons -->
-<link rel="icon" href="/images/icon.png">
-<link rel="mask-icon" href="/images/icon.svg" color="#444444">
+<link rel="icon" href="/static/images/mark.png">
+<link rel="mask-icon" href="/static/images/mark.svg" color="#039076">
 
 <!-- CSS -->
 <link rel="stylesheet" type="text/css" href="/static/styles/build/app.css">
@@ -21,33 +21,53 @@
 	
 <header class="site-header">
 	<nav>
-		<a class="home-link" href="/list">
+		<a class="home-link" href="/">
 			<svg class="site-logo" alt="emotiq" viewbox="0 0 181 52">
 				<use xlink:href="#logotype">
 			</svg>
 		</a>
-		<a class="list-link" href="/list">List</a>
+<!-- 		<a class="list-link" href="/list">List</a> -->
+		<button class="search-toggle">
+        	<span class="sr-text">Open Search</span>
+        	<svg class="search-toggle-icon" viewbox="0 0 53 26">
+				<use xlink:href="#arr">
+			</svg>
+        </button>
+		<form class="search-form" action="/" method="POST">
+	        <input type="search" placeholder="Search..." type="text" title="Search for:" name="company">
+	        <button type="submit">
+	        	<span class="sr-text">Search</span>
+	        	<svg class="search-icon" alt="search" viewbox="0 0 30 30">
+					<use xlink:href="#search">
+				</svg>
+	        </button>
+	    </form>
+		
 </header>
 
 <main>
 
 <div class="page-header">
-	<h1>Apple</h1>
-	<div class="stock-symbol">{{company}}</div>
+	{% if company %}
+	    <h1>{{company_name}}</h1>
+		<div class="stock-symbol">${{company}}</div>
+    {% endif %}
 </div>
 
 <div class="mainflow">
 
+	{% if sentiment %}
 	<div class="stats">
 		<div class="emotiq">
 			Our Emotiq Score:
-			<div class="score">69</div>
+			<div class="score">{{ sentiment|round(2, 'common') }}</div>
 		</div>
 		<div class="stock">
 			Current Stock Price:
 			<div class="score">$117.63</div>
 		</div>
 	</div>
+	{% endif %}
 
 	<div class="wideflow">
 
