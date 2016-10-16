@@ -1,12 +1,14 @@
 from flask import Flask, request
 from flask import render_template
 import json
+import time
+import datetime
 
 from goose import Goose
 from core.models import *
 from newspaper import Article as NewspaperArticle
 import sqlalchemy
-from sqlalchemy.sql.expression import extract
+from sqlalchemy.sql import func
 
 import ystockquote
 
@@ -37,9 +39,16 @@ def get_content():
                 except:
                     print "couldn't parse it"
 
-        article.ArticleScore = (article.ArticleScore + 1) / 2.0
+        article.ArticleScore = (article.ArticleScore * 2.0) - 1
         db.session.commit()
     return "done"
+
+
+def get_timestamp(date):
+    date_parts = date.split("-")
+    day_datetime = (int(date_parts[0], 10), int(date_parts[1], 10), int(date_parts[2], 10), 0, 0, 0, 0, 0, 0)
+    return time.mktime(day_datetime)
+
 
 # Example usage: http://localhost:5000/stock/AAPL?startdate=2015-01-01&enddate=2016-10-01
 @app.route('/stock/<company>', methods=['GET'])
@@ -49,7 +58,13 @@ def get_stock(company):
 
     stock_data = ystockquote.get_historical_prices(company, start_date, end_date)
 
-    return json.dumps([[x, y["Close"]] for x, y in stock_data.iteritems()])
+    stock_return_data = []
+    for date, score in stock_data.iteritems():
+        stock_return_data.append([get_timestamp(date), float(score["Close"])])
+
+    stock_return_data = sorted(stock_return_data)
+    return json.dumps(stock_return_data)
+
 
 @app.route('/sentiment/<company>', methods=['GET'])
 def get_sentiment(company):
@@ -60,16 +75,25 @@ def get_sentiment(company):
 
 @app.route('/sentiment/graph/<company>', methods=['GET'])
 def get_sentiment_graph(company):
+    start_date = request.args.get("startdate")
+    end_date = request.args.get("enddate")
 
-    highcharts = [{"data":[]}]
-    for x in db.session.execute('''SELECT  date(a.ArticlePublishDate), avg(a.articleScore) from ARTICLE a
-     	group by date(a.ArticlePublishDate)
-     	order by date(a.ArticlePublishDate) asc
-     	'''.format(company)):
+    highcharts_data = []
+    for result in db.session.execute('''SELECT strftime('%Y-%m-%d', a.ArticlePublishDate), avg(a.articleScore) from ARTICLE a
+        WHERE a.ArticlePublishDate BETWEEN "{}" AND "{}"
+     	group by strftime('%Y-%m-%d', a.ArticlePublishDate)
+     	order by strftime('%Y-%m-%d', a.ArticlePublishDate) asc
+     	'''.format(start_date, end_date)):
 
-        highcharts[0]["data"].append([x[0], x[1]])
+        highcharts_data.append([get_timestamp(result[0]), float(result[1])])
 
-    return json.dumps(highcharts)
+    highcharts_data = sorted(highcharts_data)
+    senti_accum_data = []
+    accum = 0
+    for data in highcharts_data:
+        accum += (data[1] - 0.1) * 10
+        senti_accum_data.append([data[0], accum])
+    return json.dumps(senti_accum_data)
 
 
 @app.route('/', methods=['GET', 'POST'])

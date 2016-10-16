@@ -68,6 +68,37 @@
     });
 
     </script>
+
+    <div id="container2" style="height: 400px; min-width: 310px"></div>
+    <script>
+        $(function () {
+
+        $.getJSON('http://localhost:5000/sentiment/graph/AAPL?startdate=2015-01-01&enddate=2016-10-01', function (data) {
+            // Create the chart
+            $('#container2').highcharts('StockChart', {
+
+
+                rangeSelector: {
+                    selected: 1
+                },
+
+                title: {
+                    text: 'AAPL Sentiment'
+                },
+
+                series: [{
+                    name: 'AAPL',
+                    data: data,
+                    tooltip: {
+                        valueDecimals: 2
+                    }
+                }]
+            });
+        });
+
+    });
+
+    </script>
 </div>
 
 </body>

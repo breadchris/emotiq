@@ -68,4 +68,4 @@ def get_sentiment_score(text_list):
     params = json.dumps(params)
     r = requests.post('https://westus.api.cognitive.microsoft.com/text/analytics/v2.0/sentiment', data=params, headers=headers)
     sentiments = json.loads(r.text)["documents"]
-    return sum([x["score"] for x in sentiments]) / len(sentiments)
+    return (sum([x["score"] for x in sentiments]) / len(sentiments)) * 2 - 1
