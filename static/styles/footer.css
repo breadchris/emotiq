@@ -35,4 +35,6 @@
 	max-width: 100%;
 	height: auto;
 	width: 6rem;
+	height: 6rem;
+	object-fit: cover;
 }
