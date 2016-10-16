@@ -1,15 +1,36 @@
+import json
+
 from flask import Flask
 from flask import render_template
-from flask.ext.sqlalchemy import SQLAlchemy
-import json
 from bson import json_util
-from bson.json_util import dumps
+from goose import Goose
+from newspaper import Article
+from core.models import *
+
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///tmp/lol'
+#app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+pg8000://emotiqadmin:titsOnTheTable@emotiqdb.c0cyooawfaok.us-east-1.rds.amazonaws.com:5432/articles'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db/sentiment.db'
 
-FIELDS = {'school_state': True, 'resource_type': True, 'poverty_level': True, 'date_posted': True, 'total_donations': True, '_id': False}
+g = Goose()
 
+@app.route("/getcontent")
+def getContent():
+	articles = Article.query.all()
+	for article in articles:
+		try:
+			current = g.extract(url=article.ArticleURL)
+			#article.content = current.cleaned_text
+			print current.cleaned_text
+		except:
+			try:
+				current = Article(article.ArticleURL)
+				current.download()
+				print current.text
+			except:
+				print "fuck lol"
+	#db.session.commit()
+	return "done lol"
 
 @app.route("/")
 def index():
