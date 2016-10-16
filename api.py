@@ -18,6 +18,7 @@ def get_search_results(query):
     })
 
     r = requests.get('https://api.cognitive.microsoft.com/bing/v5.0/news/search?%s' % params, headers=headers)
+    print r.text
     news_articles = json.loads(r.text)
 
     article_urls = []
@@ -26,8 +27,13 @@ def get_search_results(query):
         article_urls.append(article["url"])
         article_descriptions.append(article["description"])
 
+    article_thumbnails = []
+    for article in news_articles["value"]:
+        if 'image' in article.keys():
+            article_thumbnails.append([article["name"], article["url"], article["image"]["thumbnail"]["contentUrl"]])
+    print article_thumbnails
     # TODO return urls instead... return article_descriptions
-    return article_descriptions
+    return article_descriptions, article_thumbnails
 
 def get_textblob_sentiment(text_list):
     sentiments = []
@@ -38,7 +44,7 @@ def get_textblob_sentiment(text_list):
 
     return sentiments
 
-def get_sentiment(text_list):
+def get_sentiment_score(text_list):
     headers = {
         # Request headers
         'Content-Type': 'application/json',

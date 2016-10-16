@@ -10,3 +10,4 @@ lxml==3.6.4
 flask-sqlalchemy
 requests
 textblob
+ystockquote
