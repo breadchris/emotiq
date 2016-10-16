@@ -13,6 +13,8 @@ searchToggle.addEventListener('click', toggleSearch);
 
 /* Random Placeholder */
 var placeholders = [
+	"amzn",
+	"fit",
     "msft",
     "aapl",
 	"goog",

@@ -59,16 +59,23 @@
 
 	{% if sentiment %}
 	<div class="stats">
+		
 		<div class="emotiq">
 			Our Emotiq Score:
 			<div class="score">{{ sentiment|round(2, 'common') }}</div>
 		</div>
+		
 		{% if price %}
 		<div class="stock">
 			Current Stock Price:
 			<div class="score">${{price}}<span class="currency">USD</span></div>
 		</div>
 		{% endif %}
+		
+		<div id="pie_chart">
+			
+		</div>
+		
 	</div>
 	{% endif %}
 
@@ -171,6 +178,42 @@
 	});
 </script>
 {% endif %}
-	
+
+<script>
+	$.getJSON('/phrases/{{ company }}', function (data) {
+	// Build the chart
+	$('#pie_chart').highcharts({
+	chart: {
+		plotBackgroundColor: null,
+		plotBorderWidth: null,
+		plotShadow: false,
+		type: 'pie'
+	},
+	title: {
+	text: '{{ company }} Key Phrases'
+	},
+	tooltip: {
+	  pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+	},
+	plotOptions: {
+	  pie: {
+	      allowPointSelect: true,
+	      cursor: 'pointer',
+	      dataLabels: {
+	          enabled: false
+	      },
+	      showInLegend: true
+	  }
+	},
+	series: [{
+	  name: 'Phrases',
+	  colorByPoint: true,
+	  data: data 
+	}]
+	});
+	});
+</script>
+
+
 </body>
 </html>
