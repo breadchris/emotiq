@@ -13,7 +13,7 @@
 <link rel="mask-icon" href="/static/images/mark.svg" color="#039076">
 
 <!-- CSS -->
-<link rel="stylesheet" type="text/css" href="/static/styles/build/app.css?v0.1">
+<link rel="stylesheet" type="text/css" href="/static/styles/build/app.css?v0.2">
 
 </head>
 
@@ -53,6 +53,8 @@
 	{% if symbol %}
 		<div class="stock-symbol">${{symbol}}</div>
     {% endif %}
+    
+    <p class="description">Emotiq facilitates sentiment analysis on the stock market. Compare the first graph of sentiment to predict fluctuations in market price in the graph below. A score lower than 0.5 is a negative sentiment.</p>
 </div>
 
 <div class="mainflow">

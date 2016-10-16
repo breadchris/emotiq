@@ -29,6 +29,11 @@ main {
 	@media (min-width: 65em) {
 		padding: 0 1.25rem;
 	}
+	
+	.description {
+	    font-size: 0.8em;
+		line-height: 1.5
+	}
 }
 
 .stock-symbol {
