@@ -82,9 +82,9 @@ def index():
         # text_blob_sentiment = get_textblob_sentiment(descriptions)
         # print sum([x for x in text_blob_sentiment if x != 0]) / len(text_blob_sentiment)
 
-        return render_template("demo.html", company=company, sentiment=sentiment, imaged_articles=articles_with_images)
+        return render_template("index.html", company=company, sentiment=sentiment, imaged_articles=articles_with_images)
 
-    return render_template("demo.html")
+    return render_template("index.html")
 
 
 if __name__ == "__main__":
