@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Emotiq</title>
+
+    <meta name="Description" content="See how news articles correlate with stock prices.">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Icons -->
+    <link rel="icon" href="/images/icon.png">
+    <link rel="mask-icon" href="/images/icon.svg" color="#444444">
+
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="/static/styles/build/app.css">
+
+</head>
+
+<body>
+<div>
+    <form action="/" method="POST">
+        <input type="text" name="company" />
+        <input type="submit" />
+    </form>
+    {% if company %}
+    <h1>{{ company }}</h1>
+    <h3>{{ sentiment }}</h3>
+    <ul>
+        {% for article in articles %}
+        <li>{{ article }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+</div>
+
+</body>
+</html>

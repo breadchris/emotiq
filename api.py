@@ -1,4 +1,5 @@
-import httplib, urllib, base64
+import urllib, base64, requests, json
+from textblob import TextBlob
 
 def get_search_results(query):
     headers = {
@@ -9,18 +10,56 @@ def get_search_results(query):
     params = urllib.urlencode({
         # Request parameters
         'q': query,
-        'count': '10',
+        'category': 'stocks',
+        'count': '40',
         'offset': '0',
         'mkt': 'en-us',
         'safeSearch': 'Moderate',
     })
 
-    try:
-        conn = httplib.HTTPSConnection('api.cognitive.microsoft.com')
-        conn.request("GET", "/bing/v5.0/news/search?%s" % params, "{body}", headers)
-        response = conn.getresponse()
-        data = response.read()
-        print(data)
-        conn.close()
-    except Exception as e:
-        print("[Errno {0}] {1}".format(e.errno, e.strerror))
+    r = requests.get('https://api.cognitive.microsoft.com/bing/v5.0/news/search?%s' % params, headers=headers)
+    news_articles = json.loads(r.text)
+
+    article_urls = []
+    article_descriptions = []
+    for article in news_articles["value"]:
+        article_urls.append(article["url"])
+        article_descriptions.append(article["description"])
+
+    # TODO return urls instead... return article_descriptions
+    return article_descriptions
+
+def get_textblob_sentiment(text_list):
+    sentiments = []
+    for text in text_list:
+        blob = TextBlob(text)
+        for sentence in blob.sentences:
+            sentiments.append(sentence.sentiment.polarity)
+
+    return sentiments
+
+def get_sentiment(text_list):
+    headers = {
+        # Request headers
+        'Content-Type': 'application/json',
+        'Ocp-Apim-Subscription-Key': '03283dc946e843f3881069b78bd6b20a',
+    }
+
+    params = {
+        'documents': []
+    }
+
+    for n, text in enumerate(text_list):
+
+        text_info = {
+            "language": "en",
+            "id": str(n),
+            "text": text
+
+        }
+        params['documents'].append(text_info)
+
+    params = json.dumps(params)
+    r = requests.post('https://westus.api.cognitive.microsoft.com/text/analytics/v2.0/sentiment', data=params, headers=headers)
+    sentiments = json.loads(r.text)["documents"]
+    return sum([x["score"] for x in sentiments]) / len(sentiments)
