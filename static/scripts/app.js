@@ -1,18 +1,11 @@
 boomsvgloader.load('/static/images/icons/icon-sprite.svg');
 
-document.addEventListener( 'DOMContentLoaded', function() {
-	
-	var elem = document.querySelector('.articles');
-	
-	// Setup Masonry.
-	var msnry = new Masonry( elem, {
-		itemSelector: '.article',
-		transitionDuration: 0
-	});
-	
-	imagesLoaded( elem ).on( 'progress', function() {
-		// Layout Masonry after each image loads.
-		msnry.layout();
-	});
+var searchToggle = document.querySelector('.search-toggle');
+var searchForm = document.querySelector('.search-form');
 
-});
+function toggleSearch() {
+	searchForm.classList.toggle('open');
+	searchToggle.classList.toggle('flipped');
+}
+
+searchToggle.addEventListener('click', toggleSearch);
