@@ -12,12 +12,19 @@
 	margin-bottom: 1.25rem;
 }
 
-.stock .score {
-	color: var(--medium-green);
-}
-
 .score {
 	font-size: 3em;
 	font-weight: 700;
 	color: var(--salmon);
+}
+
+.stock .score {
+	font-size: 2.5em;
+	color: var(--medium-green);
+}
+
+.currency {
+	display: block;
+	font-size: 0.7em;
+	color: #DEDEDE;
 }

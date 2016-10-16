@@ -43,6 +43,7 @@
 	cursor: pointer;
 	border-radius: 0;
 	border: none;
+	outline: none;
 		
 	svg {
 		transition: transform 0.3s ease-out, opacity 0.3s ease-out;

@@ -20,7 +20,9 @@
 		width: calc(70% - 1.25rem);
 		order: 1;
 	}
+	
 	.stats {
+		align-self: flex-start;
 		flex: 0 auto;
 		width: calc(30% - 1.25rem);;
 		order: 2;

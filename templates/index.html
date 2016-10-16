@@ -34,7 +34,7 @@
 			</svg>
         </button>
 		<form class="search-form" action="/" method="POST">
-	        <input type="search" placeholder="Search..." type="text" title="Search for:" name="company">
+	        <input type="search" placeholder="msft" type="text" title="Search stocks or topics" name="company">
 	        <button type="submit">
 	        	<span class="sr-text">Search</span>
 	        	<svg class="search-icon" alt="search" viewbox="0 0 30 30">
@@ -48,9 +48,11 @@
 <main>
 
 <div class="page-header">
-	{% if company %}
-	    <h1>{{company_name}}</h1>
-		<div class="stock-symbol">${{company}}</div>
+    {% if topic_name %}
+	    <h1>{{topic_name}}</h1>
+    {% endif %}
+	{% if symbol %}
+		<div class="stock-symbol">${{symbol}}</div>
     {% endif %}
 </div>
 
@@ -62,10 +64,12 @@
 			Our Emotiq Score:
 			<div class="score">{{ sentiment|round(2, 'common') }}</div>
 		</div>
+		{% if price %}
 		<div class="stock">
 			Current Stock Price:
-			<div class="score">$117.63</div>
+			<div class="score">${{price}}<span class="currency">USD</span></div>
 		</div>
+		{% endif %}
 	</div>
 	{% endif %}
 

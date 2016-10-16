@@ -110,9 +110,14 @@ def get_sentiment_graph(company):
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
-        if len(request.form.get("company")) == 4:
-            company_name = get_symbol(request.form.get("company").upper())
+        if len(request.form.get("company")) <= 4:
+            topic_name = get_symbol(request.form.get("company").upper())
+            company_stock_symbol = request.form.get("company").upper()
             company_stock_price = ystockquote.get_all(request.form.get("company").upper())["price"]
+        else: 
+        	topic_name = request.form.get("company").title()
+        	company_stock_symbol = False
+        	company_stock_price = False
         company = request.form.get("company")
         descriptions,articles_with_images = get_search_results(company)
         sentiment = get_sentiment_score(descriptions)
@@ -120,7 +125,7 @@ def index():
         # text_blob_sentiment = get_textblob_sentiment(descriptions)
         # print sum([x for x in text_blob_sentiment if x != 0]) / len(text_blob_sentiment)
 
-        return render_template("index.html", company=company, company_name=company_name, price=company_stock_price, sentiment=sentiment, imaged_articles=articles_with_images)
+        return render_template("index.html", company=company, topic_name=topic_name, symbol=company_stock_symbol, price=company_stock_price, sentiment=sentiment, imaged_articles=articles_with_images)
     company_stock_price = ystockquote.get_all("AAPL")["price"]
     descriptions,articles_with_images = get_search_results("AAPL")
     return render_template("index.html", imaged_articles=articles_with_images, price=company_stock_price)
