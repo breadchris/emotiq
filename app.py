@@ -5,6 +5,7 @@ from goose import Goose
 from core.models import *
 from newspaper import Article as NewspaperArticle
 import sqlalchemy
+from sqlalchemy.sql.expression import extract
 
 from api import get_search_results, get_sentiment, get_textblob_sentiment
 
@@ -32,6 +33,9 @@ def get_content():
                     db.session.commit()
                 except:
                     print "couldn't parse it"
+
+        article.ArticleScore = (article.ArticleScore + 1) / 2.0
+        db.session.commit()
     return "done"
 
 
@@ -44,26 +48,26 @@ def get_sentiment(company):
 
 @app.route('/sentiment/graph/<company>', methods=['GET'])
 def get_sentiment_graph(company):
-    article_groups = Article.query.group_by(sqlalchemy.func.day(Article.ArticlePublishDate)).all()
+    article_groups = Article.query.group_by(extract("day", Article.ArticlePublishDate)).all()
     for articles in article_groups:
         print articles
-        #article.ArticleContent
+
         """
-        if article.ArticleContent == '':
-            print article.ArticleID
+    if article.ArticleContent == '':
+        print article.ArticleID
+        try:
+            current = g.extract(url=article.ArticleURL)
+            article.ArticleContent = current.cleaned_text
+            db.session.commit()
+        except:
             try:
-                current = g.extract(url=article.ArticleURL)
-                article.ArticleContent = current.cleaned_text
+                current = Article(article.ArticleURL)
+                current.download()
+                article.ArticleContent = current.text
                 db.session.commit()
             except:
-                try:
-                    current = Article(article.ArticleURL)
-                    current.download()
-                    article.ArticleContent = current.text
-                    db.session.commit()
-                except:
-                    print "couldn't parse it"
-        """
+                print "couldn't parse it"
+    """
     """
     articles = Article.
     for article in articles:
@@ -86,6 +90,7 @@ def get_sentiment_graph(company):
         series.append({'name': prod, 'data': sorted(datapoints.items(), key=lambda x: x[0])})
     return json.dumps(series)
     """
+    return render_template("demo.html")
 
 
 @app.route('/', methods=['GET', 'POST'])

@@ -22,4 +22,4 @@ class Article(db.Model):
 		self.ArticlePublishDate = ArticlePublishDate
 
 	def __repr__(self):
-		return "<" + self.ArticleURL + " @ " + self.ArticleScore + ">"
+		return "<" + self.ArticleURL + " @ " + str(self.ArticleScore) + ">"
