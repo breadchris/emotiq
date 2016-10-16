@@ -1,0 +1,28 @@
+.mainflow {
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: space-between;
+}
+
+.wideflow {
+	flex: 1 auto;
+	width: 100%;
+}
+
+.stats {
+	flex: 1 auto;
+	width: 100%;
+}
+
+@media (min-width: 65em) {
+	.wideflow {
+		flex: 0 auto;
+		width: calc(70% - 1.25rem);
+		order: 1;
+	}
+	.stats {
+		flex: 0 auto;
+		width: calc(30% - 1.25rem);;
+		order: 2;
+	}
+}

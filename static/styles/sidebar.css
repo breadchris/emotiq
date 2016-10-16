@@ -1,0 +1,23 @@
+.stats {
+	border-radius: 0.5rem;
+	box-shadow: 0px 3px 20px rgba(69, 69, 69, 0.2);
+	text-align: center;
+	padding: 1.25rem 0;
+	margin-bottom: 2.5rem;
+}
+
+.emotiq {
+	padding-bottom: 1.25rem;
+	border-bottom: 3px solid rgba(69, 69, 69, 0.2);
+	margin-bottom: 1.25rem;
+}
+
+.stock .score {
+	color: var(--medium-green);
+}
+
+.score {
+	font-size: 3em;
+	font-weight: 700;
+	color: var(--salmon);
+}

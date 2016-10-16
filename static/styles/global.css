@@ -3,53 +3,43 @@ body {
 	font-family: var(--font-fam);
 }
 
-.site-header {
-	width: 100%;
-	position: fixed;
-	z-index: 1;
-	top: 0;
-	left: 50%;
-	transform: translateX(-50%);
-	background-color: white;
-	border-bottom: 5px solid var(--light-green);
-	box-shadow: 0px 3px 20px rgba(69, 69, 69, 0.15);
-	
-	nav {
-		display: flex;
-		max-width: 45rem;
-		align-items: center;
-		justify-content: space-between;
-		height: 3.5rem;
-		padding: 0 3.5%;
-		margin: 0 auto;
-	}
-}
-
-.home-link {
-	text-decoration: none;
-	
-	svg {
-		height: 2rem;
-		fill: var(--dark-green); /* SVG sprite must not have a fill. */
-	}
-}
-
-.list-link {
-	font-size: 1.65rem;
-	font-weight: 700;
-	color: var(--dark-green);
-	text-decoration: none;
-}
-
 main {
 	position: relative;
 	top: 5rem;
 	max-width: 45rem;
 	font-size: 1.5rem;
-	padding: 0 7.5%;
-	margin: 0 auto 2.5rem;
+	padding: 0 1.25rem;
+	margin: 0 auto 5rem;
 	
 	h1 {
 		margin: 0;
 	}
+	
+	@media (min-width: 65em) {
+		max-width: 65rem;
+	}
+}
+
+.page-header {
+	max-width: 45rem;
+	margin-right: auto;
+	margin-left: auto;
+	margin-bottom: 1.25rem;
+	
+	@media (min-width: 65em) {
+		padding: 0 1.25rem;
+	}
+}
+
+.stock-symbol {
+	color: var(--grey);
+}
+
+.chart {
+	height: 16rem;
+	width: 100%;
+	background-color: var(--off-white);
+	box-shadow: 0px 3px 20px rgba(69, 69, 69, 0.2);
+	border-radius: var(--border-rad);
+	margin-bottom: 2.5rem;
 }
