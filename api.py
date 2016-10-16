@@ -22,8 +22,10 @@ def get_search_results(query):
     news_articles = json.loads(r.text)
 
     article_urls = []
+    article_descriptions = []
     for article in news_articles["value"]:
         article_urls.append(article["url"])
+        article_descriptions.append(article["description"])
 
     article_thumbnails = []
     for article in news_articles["value"]:
