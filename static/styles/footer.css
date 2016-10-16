@@ -1,0 +1,18 @@
+.site-footer {
+	background-color: var(--medium-green);
+	color: var(--off-white);
+	width: 100%;
+	text-align: center;
+	line-height: 1.5;
+	padding: 2.5rem 1.25rem;
+	margin-top: 2.5rem;
+	
+	a {
+		transition: color 0.3s ease;
+		color: var(--off-white);
+		
+		&:hover {
+			color: var(--salmon);
+		}
+	}
+}

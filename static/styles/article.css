@@ -1,11 +1,12 @@
 .article {
 	display: inline-block;
 	box-shadow: 0px 3px 20px rgba(69, 69, 69, 0.2);
-	border-radius: 0.5rem;
+	border-radius: var(--border-rad);
 	overflow: hidden;
 	margin-bottom: 2.5rem;
+	width: 100%;
 	
-	@media (min-width: 35rem) {
+	@media (min-width: 35em) {
 		max-width: calc(50% - 1.25rem);
 		
 		&:nth-child(odd) {
