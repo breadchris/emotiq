@@ -75,13 +75,16 @@
 
 	<div class="wideflow">
 
-		<div class="chart">
-			
-		</div>
+    <div id="sentiment_chart" class="chart" style="height: 400px; min-width: 310px">
+	    
+    </div>
+
+	{% if symbol %}
+	<div id="stock_chart" class="chart" style="height: 400px; min-width: 310px">
 		
-		<div class="chart">
-			
-		</div>
+	</div>
+    {% endif %}
+    
 		
 		<div class="articles">
 			
@@ -98,7 +101,6 @@
 					<p class="article-excerpt"></p>
 				</div>
 			</div>
-			
 			{% endfor %}
 			
 		</div>
@@ -119,6 +121,65 @@
 </footer>
 
 <script async type="text/javascript" src="/static/scripts/build/app.js"></script>
+<script src="http://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+<script src="https://code.highcharts.com/stock/highstock.js"></script>
+<script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
+
+<script>
+    $(function () {
+    $.getJSON('http://localhost:5000/sentiment/graph/{{ company }}?startdate={{ startdate }}&enddate={{ enddate }}', function (data) {
+        // Create the chart
+        $('#sentiment_chart').highcharts('StockChart', {
+	
+	            rangeSelector: {
+	                selected: 1
+	            },
+	
+	            title: {
+	                text: '{{topic_name}} Sentiment'
+	            },
+	
+	            series: [{
+	                name: '{{topic_name}}',
+	                data: data,
+	                tooltip: {
+	                    valueDecimals: 2
+	                }
+	            }]
+	        });
+	    });
+	
+	});
+</script>
+
+{% if symbol %}
+<script>
+    $(function () {
+    $.getJSON('http://localhost:5000/stock/{{ company }}?startdate={{ startdate }}&enddate={{ enddate }}', function (data) {
+        // Create the chart
+        $('#stock_chart').highcharts('StockChart', {
+	
+	            rangeSelector: {
+	                selected: 1
+	            },
+	
+	            title: {
+	                text: '{{topic_name}} Stock Price'
+	            },
+	
+	            series: [{
+	                name: '{{topic_name}}',
+	                data: data,
+	                tooltip: {
+	                    valueDecimals: 2
+	                }
+	            }]
+	        });
+	    });
+	
+	});
+</script>
+{% endif %}
 	
 </body>
 </html>
