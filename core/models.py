@@ -10,7 +10,7 @@ class Article(db.Model):
 	__tablename__ = 'ARTICLE'
 	ArticleID = db.Column(db.Integer, primary_key=True)
 	ArticleURL = db.Column(db.Text)
-	#ArticleContent = db.Column(db.Text)
+	ArticleContent = db.Column(db.Text)
 	ArticleScore = db.Column(db.Float)
 	ArticleTitle = db.Column(db.Text)
 	ArticlePublishDate = db.Column(db.DateTime)
