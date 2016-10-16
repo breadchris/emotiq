@@ -6,10 +6,10 @@
 	margin-bottom: 2.5rem;
 }
 
-.emotiq {
-	padding-bottom: 1.25rem;
-	border-bottom: 3px solid rgba(69, 69, 69, 0.2);
-	margin-bottom: 1.25rem;
+.stock {
+	padding-top: 1.25rem;
+	border-top: 3px solid rgba(69, 69, 69, 0.2);
+	margin-top: 1.25rem;
 }
 
 .score {

@@ -5,15 +5,14 @@
 	top: 0;
 	left: 50%;
 	transform: translateX(-50%);
-	background-color: white;
-	border-bottom: 3px solid var(--medium-green);
+	background-color: var(--medium-green);
 	box-shadow: 0px 3px 20px rgba(69, 69, 69, 0.15);
 	
 	nav {
 		display: flex;
 		max-width: 45rem;
 		justify-content: space-between;
-		background-color: white;
+		background-color: var(--medium-green);
 		height: 3.5rem;
 		padding: 0 1.25rem;
 		margin: 0 auto;
@@ -26,7 +25,7 @@
 	
 	svg {
 		height: 2rem;
-		fill: var(--medium-green); /* SVG sprite must not have a fill. */
+		fill: var(--off-white); /* SVG sprite must not have a fill. */
 	}
 }
 
@@ -34,7 +33,7 @@
 	align-self: center;
 	font-size: 1.65rem;
 	font-weight: 700;
-	color: var(--medium-green);
+	color: var(--off-white);
 	text-decoration: none;
 }
 
@@ -49,7 +48,7 @@
 		transition: transform 0.3s ease-out, opacity 0.3s ease-out;
 		width: 1.5rem;
 		height: 1.5rem;
-		fill: var(--medium-green);
+		fill: var(--off-white);
 		
 		&:hover {
 			opacity: 0.8;
@@ -71,11 +70,14 @@
     left: 0;
     width: 100%;
     height: 3.5rem;
-	background-color: white;
+	background-color: rgba(255, 255, 255, 0.85);
 	max-height: 0;
-	border-top: 3px solid var(--medium-green);
 	border-bottom: 3px solid var(--medium-green);
 	
+	@supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
+		background-color: rgba(255, 255, 255, 0.55);
+		backdrop-filter: blur(20px);
+	}
 	
 	&.open {
 		top: 3.5rem;
@@ -89,20 +91,26 @@
 		border-radius: 0;
 		font-size: 1.5rem;
 		padding: 0 1.25rem;
+		background-color: transparent;
+		color: var(--off-black);
 		border: none;
 		margin: 0;
 		outline: none;
+		
+		&::placeholder {
+			color: var(--grey);
+		}
 	}
 	
 	button {
 		transition: background-color 0.3s ease;
 		background: none;
+		background-color: var(--light-green);
 		cursor: pointer;
 		border-radius: 0;
 		border: none;
 		height: 100%;
 		width: 4rem;
-		border-left: 3px solid var(--medium-green);
 		
 		&:hover {
 			background-color: #F1F1F1;
@@ -125,16 +133,17 @@
 		z-index: auto;
 		position: static;
 		border: none;
+		background-color: rgba(255, 255, 255, 0.95);
 		box-shadow: none;
 		max-width: 20rem;
 		max-height: none;
 		
 		input[type="search"] {
-			border-left: 3px solid var(--medium-green);
+
 		}
 		
 		button {
-			border-right: 3px solid var(--medium-green);
+
 		}
 		
 		&.open {
