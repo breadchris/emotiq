@@ -3,7 +3,7 @@ from flask import render_template
 import json
 import time
 import datetime
-
+import requests
 from goose import Goose
 from core.models import *
 from newspaper import Article as NewspaperArticle
@@ -18,6 +18,16 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db/sentiment.db'
 
 g = Goose()
+
+
+def get_symbol(symbol):
+    url = "http://d.yimg.com/autoc.finance.yahoo.com/autoc?query={}&region=1&lang=en".format(symbol)
+
+    result = requests.get(url).json()
+
+    for x in result['ResultSet']['Result']:
+        if x['symbol'] == symbol:
+            return x['name']
 
 
 @app.route("/getcontent")
@@ -99,6 +109,8 @@ def get_sentiment_graph(company):
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
+        if len(request.form.get("company")) == 4:
+            print get_symbol(request.form.get("company"))
         company = request.form.get("company")
         descriptions,articles_with_images = get_search_results(company)
         sentiment = get_sentiment_score(descriptions)
