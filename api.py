@@ -38,7 +38,7 @@ def get_textblob_sentiment(text_list):
 
     return sentiments
 
-def get_sentiment(text_list):
+def get_sentiment_score(text_list):
     headers = {
         # Request headers
         'Content-Type': 'application/json',

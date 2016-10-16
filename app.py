@@ -10,7 +10,7 @@ from sqlalchemy.sql.expression import extract
 
 import ystockquote
 
-from api import get_search_results, get_sentiment, get_textblob_sentiment
+from api import get_search_results, get_sentiment_score, get_textblob_sentiment
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db/sentiment.db'
@@ -54,7 +54,7 @@ def get_stock(company):
 @app.route('/sentiment/<company>', methods=['GET'])
 def get_sentiment(company):
     descriptions = get_search_results(company)
-    sentiment = get_sentiment(descriptions)
+    sentiment = get_sentiment_score(descriptions)
     return sentiment
 
 
@@ -77,7 +77,7 @@ def index():
     if request.method == 'POST':
         company = request.form.get("company")
         descriptions = get_search_results(company)
-        sentiment = get_sentiment(descriptions)
+        sentiment = get_sentiment_score(descriptions)
 
         # text_blob_sentiment = get_textblob_sentiment(descriptions)
         # print sum([x for x in text_blob_sentiment if x != 0]) / len(text_blob_sentiment)
