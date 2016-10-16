@@ -68,3 +68,32 @@ def get_sentiment_scores(text_list):
     r = requests.post('https://westus.api.cognitive.microsoft.com/text/analytics/v2.0/sentiment', data=params, headers=headers)
     sentiments = json.loads(r.text)["documents"]
     return [x["score"] for x in sentiments]
+
+def get_text_topics(text_list):
+    headers = {
+        # Request headers
+        'Content-Type': 'application/json',
+        'Ocp-Apim-Subscription-Key': '03283dc946e843f3881069b78bd6b20a',
+    }
+
+    params = {
+        'documents': []
+    }
+
+    for n, text in enumerate(text_list):
+
+        text_info = {
+            "documents": [
+                {
+                    "language": "en",
+                    "id": str(n),
+                    "text": text
+                }
+            ]
+        }
+        params['documents'].append(text_info)
+
+    params = json.dumps(params)
+    r = requests.post('https://westus.api.cognitive.microsoft.com/text/analytics/v2.0/keyPhrases', data=params, headers=headers)
+    sentiments = json.loads(r.text)["documents"]
+    return [x["keyPhrased"] for x in sentiments]

@@ -118,6 +118,12 @@ def get_sentiment_graph(company):
     return json.dumps(senti_accum_data)
 
 
+@app.route('/phrases/<company>', methods=['GET'])
+def get_key_phrases(company):
+    articles, articles_with_images = get_search_results(company)
+    key_phrases = get_text_topics([a["description"] for a in articles])
+    return None
+
 @app.route('/demo', methods=['GET', 'POST'])
 def demo():
     if request.method == 'POST':
