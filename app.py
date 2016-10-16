@@ -27,6 +27,7 @@ def get_symbol(symbol):
 
     for x in result['ResultSet']['Result']:
         if x['symbol'] == symbol:
+            print x['name']
             return x['name']
 
 
@@ -110,7 +111,7 @@ def get_sentiment_graph(company):
 def index():
     if request.method == 'POST':
         if len(request.form.get("company")) == 4:
-            print get_symbol(request.form.get("company"))
+            company_name = get_symbol(request.form.get("company").upper())
         company = request.form.get("company")
         descriptions,articles_with_images = get_search_results(company)
         sentiment = get_sentiment_score(descriptions)
@@ -118,8 +119,7 @@ def index():
         # text_blob_sentiment = get_textblob_sentiment(descriptions)
         # print sum([x for x in text_blob_sentiment if x != 0]) / len(text_blob_sentiment)
 
-        return render_template("index.html", company=company, sentiment=sentiment, imaged_articles=articles_with_images)
-
+        return render_template("index.html", company=company, company_name=company_name, sentiment=sentiment, imaged_articles=articles_with_images)
     descriptions,articles_with_images = get_search_results("AAPL")
     return render_template("index.html", imaged_articles=articles_with_images)
 
