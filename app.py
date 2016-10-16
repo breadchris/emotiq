@@ -12,7 +12,7 @@ from sqlalchemy.sql import func
 
 import ystockquote
 
-from api import get_search_results, get_sentiment_score, get_textblob_sentiment
+from api import get_search_results, get_sentiment_scores, get_textblob_sentiment
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db/sentiment.db'
@@ -56,6 +56,8 @@ def get_content():
 
 
 def get_timestamp(date):
+    if "T" in date:
+        date = date.split("T")[0]
     date_parts = date.split("-")
     day_datetime = (int(date_parts[0], 10), int(date_parts[1], 10), int(date_parts[2], 10), 0, 0, 0, 0, 0, 0)
     return time.mktime(day_datetime)
@@ -79,33 +81,61 @@ def get_stock(company):
 
 @app.route('/sentiment/<company>', methods=['GET'])
 def get_sentiment(company):
-    descriptions,articles_with_images = get_search_results(company)
-    sentiment = get_sentiment_score(descriptions)
+    descriptions, articles_with_images = get_search_results(company)
+    sentiments = get_sentiment_scores([x["description"] for x in descriptions])
+    sentiment = sum(sentiments) / len(sentiments)
     return sentiment
-
 
 @app.route('/sentiment/graph/<company>', methods=['GET'])
 def get_sentiment_graph(company):
     start_date = request.args.get("startdate")
     end_date = request.args.get("enddate")
 
-    highcharts_data = []
-    for result in db.session.execute('''SELECT strftime('%Y-%m-%d', a.ArticlePublishDate), avg(a.articleScore) from ARTICLE a
-        WHERE a.ArticlePublishDate BETWEEN "{}" AND "{}"
-     	group by strftime('%Y-%m-%d', a.ArticlePublishDate)
-     	order by strftime('%Y-%m-%d', a.ArticlePublishDate) asc
-     	'''.format(start_date, end_date)):
+    articles, articles_with_images = get_search_results(company)
 
-        highcharts_data.append([get_timestamp(result[0]), float(result[1])])
+    descriptions = []
+    for article in articles:
+        descriptions.append(article["description"])
+    sentiments = get_sentiment_scores(descriptions)
+
+    article_parsed = {}
+    for n, article in enumerate(articles):
+        article_timestamp = get_timestamp(article["datePublished"])
+        if article_timestamp not in article_parsed.keys():
+            article_parsed[article_timestamp] = []
+        article_parsed[article_timestamp].append(sentiments[n])
+
+    highcharts_data = []
+    for datetime, scores in article_parsed.iteritems():
+        highcharts_data.append([datetime, sum(scores) / len(scores)])
 
     highcharts_data = sorted(highcharts_data)
     senti_accum_data = []
     accum = 0
     for data in highcharts_data:
-        accum += (data[1] - 0.1) * 10
+        accum = data[1] - 0.5
         senti_accum_data.append([data[0], accum])
     return json.dumps(senti_accum_data)
 
+
+@app.route('/demo', methods=['GET', 'POST'])
+def demo():
+    if request.method == 'POST':
+        company = request.form.get("company")
+        descriptions,articles_with_images = get_search_results(company)
+        sentiments = get_sentiment_scores([x["description"] for x in descriptions])
+        sentiment = sum(sentiments) / len(sentiments)
+
+        # text_blob_sentiment = get_textblob_sentiment(descriptions)
+        # print sum([x for x in text_blob_sentiment if x != 0]) / len(text_blob_sentiment)
+
+        start_date = "2016-10-02"
+        end_date = "2016-10-16"
+        return render_template("demo.html", company=company, sentiment=sentiment, imaged_articles=articles_with_images,\
+                               startdate=start_date, enddate=end_date)
+
+    descriptions,articles_with_images = get_search_results("AAPL")
+    return render_template("demo.html", imaged_articles=articles_with_images)
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -120,7 +150,8 @@ def index():
         	company_stock_price = False
         company = request.form.get("company")
         descriptions,articles_with_images = get_search_results(company)
-        sentiment = get_sentiment_score(descriptions)
+        sentiments = get_sentiment_scores([x["description"] for x in descriptions])
+        sentiment = sum(sentiments) / len(sentiments)
 
         # text_blob_sentiment = get_textblob_sentiment(descriptions)
         # print sum([x for x in text_blob_sentiment if x != 0]) / len(text_blob_sentiment)

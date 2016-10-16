@@ -7,3 +7,4 @@ node_modules
 static/styles/build/
 static/scripts/build/
 static/images/icons/icon-sprite.svg
+*.pyc
