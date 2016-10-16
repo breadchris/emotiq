@@ -53,7 +53,7 @@ def get_stock(company):
 
 @app.route('/sentiment/<company>', methods=['GET'])
 def get_sentiment(company):
-    descriptions = get_search_results(company)
+    descriptions,articles_with_images = get_search_results(company)
     sentiment = get_sentiment_score(descriptions)
     return sentiment
 
@@ -76,7 +76,7 @@ def get_sentiment_graph(company):
 def index():
     if request.method == 'POST':
         company = request.form.get("company")
-        descriptions = get_search_results(company)
+        descriptions,articles_with_images = get_search_results(company)
         sentiment = get_sentiment_score(descriptions)
 
         # text_blob_sentiment = get_textblob_sentiment(descriptions)
