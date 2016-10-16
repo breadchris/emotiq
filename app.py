@@ -9,7 +9,6 @@ from core.models import *
 
 
 app = Flask(__name__)
-#app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+pg8000://emotiqadmin:titsOnTheTable@emotiqdb.c0cyooawfaok.us-east-1.rds.amazonaws.com:5432/articles'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db/sentiment.db'
 
 g = Goose()
@@ -18,19 +17,21 @@ g = Goose()
 def getContent():
 	articles = Article.query.all()
 	for article in articles:
-		try:
-			current = g.extract(url=article.ArticleURL)
-			#article.content = current.cleaned_text
-			print current.cleaned_text
-		except:
+		if article.ArticleContent == '':
+			print article.ArticleID
 			try:
-				current = Article(article.ArticleURL)
-				current.download()
-				print current.text
+				current = g.extract(url=article.ArticleURL)
+				article.ArticleContent = current.cleaned_text
+				db.session.commit()
 			except:
-				print "fuck lol"
-	#db.session.commit()
-	return "done lol"
+				try:
+					current = Article(article.ArticleURL)
+					current.download()
+					article.ArticleContent = current.text
+					db.session.commit()
+				except:
+					print "couldn't parse it"
+	return "done"
 
 @app.route("/")
 def index():
