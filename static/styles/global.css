@@ -10,11 +10,11 @@ main {
 	font-size: 1.5rem;
 	padding: 0 1.25rem;
 	margin: 0 auto 5rem;
-	
+
 	h1 {
 		margin: 0;
 	}
-	
+
 	@media (min-width: 65em) {
 		max-width: 65rem;
 	}
@@ -25,11 +25,11 @@ main {
 	margin-right: auto;
 	margin-left: auto;
 	margin-bottom: 1.25rem;
-	
+
 	@media (min-width: 65em) {
 		padding: 0 1.25rem;
 	}
-	
+
 	.description {
 	    font-size: 0.8em;
 		line-height: 1.5
@@ -47,4 +47,5 @@ main {
 	box-shadow: 0px 3px 20px rgba(69, 69, 69, 0.2);
 	border-radius: var(--border-rad);
 	margin-bottom: 2.5rem;
+	overflow: hidden;
 }
