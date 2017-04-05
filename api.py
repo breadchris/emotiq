@@ -1,10 +1,10 @@
-import urllib, base64, requests, json
+import urllib, base64, requests, json, os
 from textblob import TextBlob
 
 def get_search_results(query):
     headers = {
         # Request headers
-        'Ocp-Apim-Subscription-Key': '45ed6c588fd547a7b63acb074b4e3ea5',
+        'Ocp-Apim-Subscription-Key': os.environ['Ocp-Apim-Subscription-Key'],
     }
 
     params = urllib.urlencode({
@@ -47,7 +47,7 @@ def get_sentiment_scores(text_list):
     headers = {
         # Request headers
         'Content-Type': 'application/json',
-        'Ocp-Apim-Subscription-Key': '8ba89871877043cb9372879e03198203',
+        'Ocp-Apim-Subscription-Key': os.environ['Ocp-Apim-Subscription-Key'],
     }
 
     params = {
@@ -73,7 +73,7 @@ def get_text_topics(text_list):
     headers = {
         # Request headers
         'Content-Type': 'application/json',
-        'Ocp-Apim-Subscription-Key': '8ba89871877043cb9372879e03198203',
+        'Ocp-Apim-Subscription-Key': os.environ['Ocp-Apim-Subscription-Key'],
     }
 
     params = {
